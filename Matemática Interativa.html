@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Matemática Interativa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #explicacao {
+            background-color: #e8f5e9;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        #questao {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            margin: 10px;
+        }
+
+        #respostaCorreta {
+            display: none; /* Esconde o input que armazena a resposta correta */
+        }
+    </style>
+    <script>
+        let operacaoAtual;
+
+        // Função para selecionar o tipo de operação
+        function selecionarOperacao(operacao) {
+            operacaoAtual = operacao;
+            if (operacao === 'multiplicacao') {
+                gerarMultiplicacao();
+                document.getElementById("explicacao").innerHTML = `
+                    <h3>Como funciona a Multiplicação?</h3>
+                    <p>A multiplicação é uma maneira de somar um número várias vezes. Imagine que você tem 4 sacos, e cada saco contém 3 maçãs. Em vez de somar 3 + 3 + 3 + 3, podemos multiplicar 4 (sacos) por 3 (maçãs em cada saco) e obter 12. Assim:</p>
+                    <ul>
+                        <li><strong>4 x 3 = 12</strong></li>
+                    </ul>
+                    <p>Outro exemplo: Se você vê a operação 5 x 2, significa somar o número 5 duas vezes, ou seja, 5 + 5, o que resulta em 10:</p>
+                    <ul>
+                        <li><strong>5 x 2 = 10</strong></li>
+                    </ul>
+                    <p>A multiplicação é uma forma rápida de fazer somas repetidas.</p>
+                `;
+            } else if (operacao === 'divisao') {
+                gerarDivisao();
+                document.getElementById("explicacao").innerHTML = `
+                    <h3>Como funciona a Divisão?</h3>
+                    <p>A divisão é a operação de dividir um número em partes iguais. Por exemplo, imagine que você tem 12 doces e quer dividir igualmente entre 4 amigos. Para saber quantos doces cada amigo vai receber, dividimos 12 por 4:</p>
+                    <ul>
+                        <li><strong>12 ÷ 4 = 3</strong> (cada amigo recebe 3 doces)</li>
+                    </ul>
+                    <p>Outro exemplo: se você tem 15 lápis e quer dividi-los em 5 caixas, quantos lápis vão em cada caixa?</p>
+                    <ul>
+                        <li><strong>15 ÷ 5 = 3</strong> (cada caixa vai ter 3 lápis)</li>
+                    </ul>
+                    <p>A divisão ajuda a repartir coisas de maneira igual.</p>
+                `;
+            }
+        }
+
+        // Função para gerar exercício de multiplicação (1 a 10)
+        function gerarMultiplicacao() {
+            let num1 = Math.floor(Math.random() * 10) + 1; // Número entre 1 e 10
+            let num2 = Math.floor(Math.random() * 10) + 1; // Número entre 1 e 10
+            document.getElementById("questao").innerHTML = `${num1} x ${num2}`;
+            document.getElementById("respostaCorreta").value = num1 * num2;
+        }
+
+        // Função para gerar exercício de divisão por qualquer número inteiro
+        function gerarDivisao() {
+            let num1 = Math.floor(Math.random() * 100) + 1; // Evita divisão por zero
+            let num2 = Math.floor(Math.random() * 10) + 1; // Evita divisão por zero
+            let quociente = Math.floor(num1 / num2); // Resultado da divisão inteira
+            num1 = quociente * num2; // Garante que a divisão seja exata
+
+            document.getElementById("questao").innerHTML = `${num1} ÷ ${num2}`;
+            document.getElementById("respostaCorreta").value = quociente;
+        }
+
+        // Função para verificar resposta
+        function verificarResposta() {
+            let resposta = parseInt(document.getElementById("resposta").value);
+            let respostaCorreta = parseInt(document.getElementById("respostaCorreta").value);
+
+            if (resposta === respostaCorreta) {
+                alert("Correto! Muito bem!");
+            } else {
+                alert("Ops! Tente novamente.");
+            }
+
+            // Gera nova questão da mesma operação
+            if (operacaoAtual === 'multiplicacao') {
+                gerarMultiplicacao();
+            } else if (operacaoAtual === 'divisao') {
+                gerarDivisao();
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h1>Aprenda Multiplicação e Divisão!</h1>
+<p>Escolha uma operação para praticar:</p>
+
+<button onclick="selecionarOperacao('multiplicacao')">Multiplicação</button>
+<button onclick="selecionarOperacao('divisao')">Divisão</button>
+
+<div id="explicacao">
+    <p>Escolha uma operação para ver a explicação e começar os exercícios.</p>
+</div>
+
+<div id="questao">Inicie um exercício para ver a questão.</div>
+<input type="number" id="resposta" placeholder="Sua resposta">
+<input type="hidden" id="respostaCorreta">
+<button onclick="verificarResposta()">Verificar</button>
+
+</body>
+</html>
